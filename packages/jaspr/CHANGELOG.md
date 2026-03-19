@@ -1,4 +1,4 @@
-## Unreleased patch
+## 0.22.4
 
 - Allow `analyzer` versions 10.x.
 
