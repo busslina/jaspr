@@ -9,9 +9,11 @@ import 'package:pub_updater/pub_updater.dart';
 
 import 'commands/build_command.dart';
 import 'commands/clean_command.dart';
+import 'commands/convert_html_command.dart';
 import 'commands/create_command.dart';
 import 'commands/daemon_command.dart';
 import 'commands/doctor_command.dart';
+import 'commands/install_skills_command.dart';
 import 'commands/migrate_command.dart';
 import 'commands/serve_command.dart';
 import 'commands/tooling_daemon_command.dart';
@@ -36,10 +38,12 @@ class JasprCommandRunner extends CompletionCommandRunner<int> {
     addCommand(CreateCommand());
     addCommand(ServeCommand());
     addCommand(BuildCommand());
+    addCommand(ConvertHtmlCommand());
     addCommand(CleanCommand());
     addCommand(UpdateCommand());
     addCommand(DoctorCommand());
     addCommand(MigrateCommand());
+    addCommand(InstallSkillsCommand());
     addCommand(DaemonCommand());
     addCommand(ToolingDaemonCommand());
   }

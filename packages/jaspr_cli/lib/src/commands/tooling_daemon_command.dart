@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import '../daemon/logger.dart';
 import '../domains/html_domain.dart';
 import '../domains/scopes_domain.dart';
