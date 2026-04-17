@@ -1,4 +1,4 @@
-## Unreleased breaking
+## 0.23.0
 
 - Added **Agent Skills** for Jaspr, which can be installed with `jaspr install-skills`. 
 

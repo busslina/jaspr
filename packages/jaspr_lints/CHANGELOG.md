@@ -1,4 +1,4 @@
-## Unreleased breaking
+## 0.7.0
 
 - Added `unsafe_imports` lint rule to detect unsafe platform-specific imports in components depending on where they are rendered (server or client).
 - Component scopes are now calculated by this package, instead of the `jaspr tooling-daemon` command.
