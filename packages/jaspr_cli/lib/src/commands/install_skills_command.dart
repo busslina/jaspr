@@ -71,7 +71,7 @@ class InstallSkillsCommand extends BaseCommand {
       return 1;
     }
 
-    final jasprPath = p.isAbsolute(jasprPackageUri)
+    final jasprPath = p.isAbsolute(jasprPackageUri) || jasprPackageUri.startsWith('file://')
         ? p.fromUri(jasprPackageUri)
         : p.join(p.dirname(packageConfigFile.absolute.path), jasprPackageUri);
     final skillsSourceDir = Directory(p.join(jasprPath, 'skills'));
