@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 
+import '../project.dart';
 import 'chrome.dart';
 import 'util.dart';
 
@@ -81,7 +82,6 @@ class DevProxy {
       );
 
       final loadStrategy = BuildRunnerRequireStrategyProvider(
-        assetHandler,
         reload,
         assetReader,
         buildSettings,
@@ -103,6 +103,7 @@ class DevProxy {
         ddsConfiguration: DartDevelopmentServiceConfiguration(
           enable: true,
           serveDevTools: true,
+          dartExecutable: dartExecutable,
         ),
         expressionCompiler: ddcService,
       );
