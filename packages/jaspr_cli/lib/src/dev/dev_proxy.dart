@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:build_daemon/data/build_status.dart' as daemon;
 import 'package:dwds/data/build_result.dart';
 import 'package:dwds/dwds.dart';
-import 'package:dwds/sdk_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 
@@ -93,7 +95,7 @@ class DevProxy {
           'localhost',
           proxyPort,
           verbose: false,
-          sdkConfigurationProvider: const DefaultSdkConfigurationProvider(),
+          sdkConfigurationProvider: const JasprSdkConfigurationProvider(),
         );
       }
 
@@ -144,5 +146,42 @@ class DevProxy {
     client.close();
     await dwds?.stop();
     await ddcService?.stop();
+  }
+}
+
+/// A custom [SdkConfigurationProvider] that resolves the SDK directory
+/// using the `dartExecutable` in AOT mode.
+class JasprSdkConfigurationProvider extends SdkConfigurationProvider {
+  const JasprSdkConfigurationProvider();
+
+  @override
+  Future<SdkConfiguration> get configuration async {
+    // Check that we're running from a compiled binary (like jaspr.exe) and not
+    // from source or snapshot.
+    final isAotMode =
+        !Platform.script.path.endsWith('.dart') &&
+        !Platform.script.path.endsWith('.snapshot') &&
+        !Platform.script.path.endsWith('.dill');
+
+    final defaultLayout = SdkLayout.createDefault(dartSdkDir);
+
+    if (!isAotMode) {
+      return SdkConfiguration.fromSdkLayout(defaultLayout);
+    }
+
+    final aotSnapshotPath = p.join(
+      dartSdkDir,
+      'bin',
+      'snapshots',
+      'dartdevc_aot.dart.snapshot',
+    );
+
+    return SdkConfiguration.fromSdkLayout(
+      SdkLayout(
+        sdkDirectory: dartSdkDir,
+        summaryPath: defaultLayout.summaryPath,
+        dartdevcSnapshotPath: aotSnapshotPath,
+      ),
+    );
   }
 }
