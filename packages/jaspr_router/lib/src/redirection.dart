@@ -211,7 +211,12 @@ void _addRedirect(List<RouteMatchList> redirects, RouteMatchList newMatch, Uri p
 }
 
 RouteMatchList _setRedirectHeader(BuildContext context, RouteMatchList matchList) {
-  PlatformRouter.instance.redirect(context, matchList.uri.path);
+  // The whole location, not just the path: a redirect target can carry a query
+  // (`/login?redirect-to=/slave/abc`), and dropping it loses the destination.
+  final uri = matchList.uri;
+  final location = uri.hasQuery ? '${uri.path}?${uri.query}' : uri.path;
+
+  PlatformRouter.instance.redirect(context, location);
   return _redirectMatch(matchList.uri);
 }
 
